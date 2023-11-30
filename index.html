@@ -461,7 +461,7 @@
                                         <input
                                             type="text"
                                             name="name"
-                                            oninput="validateinput(this)"
+                                            oninput="validateInput(this)"
                                             class="form-control"
                                             id="name"
                                             placeholder="Your Name"
@@ -476,6 +476,7 @@
                                             id="email"
                                             placeholder="Your Email"
                                             autocomplete="off"
+                                            oninput="validateEmail(this)"
                                         />
                                     </div>
                                 </div>
@@ -501,11 +502,21 @@
                                 </div>
                                 <div class="my-3">
                                     <!-- <div class="loading">Loading</div> -->
-                                    <div class="error-message"></div>
+                                    <div class="error-message" id="error-message"></div>
                                     <!-- <div class="sent-message">Your message has been sent. Thank you!</div> -->
                                 </div>
                                 <div class="text-center"><button type="submit" class="butt">Send Message</button></div>
                             </form>
+                        </div>
+                        </div>
+                        </div>
+                        </section>
+                        <!-- Add this div for the modal -->
+                        <div class="custom-modal" id="custom-modal">
+                            <div class="modal-content">
+                                <span class="close-modal" onclick="closeModal()">&times;</span>
+                                <p id="modal-message"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -560,54 +571,84 @@
         <script src="assets/vendor/php-email-form/validate.js"></script>
 
         <!-- Template Main JS File -->
-        <script src="assets/js/main.js"></script>
-        <script>
-            $("#submit-form").submit((e) => {
-                e.preventDefault();
+        <!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-                // Validate form inputs
-                var name = $("#name").val();
-                var email = $("#email").val();
-                var subject = $("#subject").val();
-                var message = $("#message").val();
+<script>
+$("#submit-form").submit((e) => {
+    e.preventDefault();
 
-                if (!name || !email || !subject || !message) {
-                    // If any required field is empty, show the custom modal
-                    showModal("Please fill out all required fields");
-                    return;
-                }
+    // Validate form inputs
+    var name = $("#name").val();
+    var email = $("#email").val();
+    var subject = $("#subject").val();
+    var message = $("#message").val();
 
-                // If all required fields are filled, proceed with the AJAX request
-                $.ajax({
-                    url: "https://script.google.com/macros/s/AKfycbxYEWC1kpaFCgUqi4T7EYww_0M55EijS5Jx5Xd3AauiCHiAXGbSqvIpGFPu21RH6w6H/exec",
-                    data: $("#submit-form").serialize(),
-                    method: "post",
-                    success: function (response) {
-                        // If successful, show the custom modal
-                        showModal("Form submitted successfully!");
-                        $("#submit-form")[0].reset();
-                    },
-                    error: function (err) {
-                        // If there's an error, show the custom modal
-                        showModal("Something went wrong");
-                    },
-                });
-            });
+    // Validate email using a regular expression
+    if (!isValidEmail(email)) {
+        // If email is invalid, show the custom modal
+        showModal("Please enter a valid email address");
+        return;
+    }
 
-            function validateinput(inputelement) {
-                inputelement.value = inputelement.value.replace(/[0-9]/g, "");
-            }
+    if (!name || !subject || !message) {
+        // If any other required field is empty, show the custom modal
+        showModal("Please fill out all required fields");
+        return;
+    }
 
-            // Function to show the custom modal
-            function showModal(message) {
-                $("#modal-message").text(message);
-                $("#custom-modal").show();
-            }
+    // If all required fields are filled and email is valid, proceed with the AJAX request
+    $.ajax({
+        url: "https://script.google.com/macros/s/AKfycbxYEWC1kpaFCgUqi4T7EYww_0M55EijS5Jx5Xd3AauiCHiAXGbSqvIpGFPu21RH6w6H/exec",
+        data: $("#submit-form").serialize(),
+        method: "post",
+        success: function (response) {
+            // If successful, show the custom modal
+            showModal("Form submitted successfully!");
+            $("#submit-form")[0].reset();
+        },
+        error: function (err) {
+            // If there's an error, show the custom modal
+            showModal("Something went wrong");
+        },
+    });
+});f
 
-            // Function to close the custom modal
-            function closeModal() {
-                $("#custom-modal").hide();
-            }
-        </script>
+function validateInput(inputElement) {
+    inputElement.value = inputElement.value.replace(/[0-9]/g, "");
+}
+
+function validateEmail(emailElement) {
+    var email = emailElement.value;
+    if (!isValidEmail(email)) {
+        // If email is invalid, show an error message
+        $("#error-message").text("Please enter a valid email address");
+    } else {
+        // If email is valid, clear the error message
+        $("#error-message").text("");
+    }
+}
+
+// Function to show the custom modal
+function showModal(message) {
+    $("#modal-message").text(message);
+    $("#custom-modal").show();
+}
+
+// Function to close the custom modal
+function closeModal() {
+    $("#custom-modal").hide();
+}
+
+// Function to validate email using a regular expression
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+</script>
     </body>
 </html>
+
+
