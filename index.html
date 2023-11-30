@@ -343,7 +343,7 @@
                     <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
                         <div class="col-lg-4 col-md-6 portfolio-item filter">
                             <div class="portfolio-wrap">
-                                <img src="kv_galaxy-z-flip5.webp" class="img-fluid" alt="kv_galaxy-z-flip5"/>
+                                <img src="kv_galaxy-z-flip5.webp" class="img-fluid" alt="kv_galaxy-z-flip5" />
                                 <div class="portfolio-info">
                                     <h4>Samsung website</h4>
                                     <p>Samsung</p>
@@ -369,7 +369,7 @@
 
                         <div class="col-lg-4 col-md-6 portfolio-item filter">
                             <div class="portfolio-wrap">
-                                <img src="discord.webp" class="img-fluid" alt="discord"/>
+                                <img src="discord.webp" class="img-fluid" alt="discord" />
                                 <div class="portfolio-info">
                                     <h4>Discord website</h4>
                                     <p>Discord</p>
@@ -509,6 +509,14 @@
                     </div>
                 </div>
             </section>
+            <!-- Add this div for the modal -->
+            <div class="custom-modal" id="custom-modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal()">&times;</span>
+                    <p id="modal-message"></p>
+                </div>
+            </div>
+
             <!-- End Contact Section -->
         </main>
         <!-- End #main -->
@@ -555,6 +563,7 @@
         <script>
             $("#submit-form").submit((e) => {
                 e.preventDefault();
+
                 // Validate form inputs
                 var name = $("#name").val();
                 var email = $("#email").val();
@@ -562,29 +571,41 @@
                 var message = $("#message").val();
 
                 if (!name || !email || !subject || !message) {
-                    // If any required field is empty, display an error message or take appropriate action
-                    alert("Please fill out all required fields");
+                    // If any required field is empty, show the custom modal
+                    showModal("Please fill out all required fields");
                     return;
                 }
 
                 // If all required fields are filled, proceed with the AJAX request
-
                 $.ajax({
                     url: "https://script.google.com/macros/s/AKfycbxYEWC1kpaFCgUqi4T7EYww_0M55EijS5Jx5Xd3AauiCHiAXGbSqvIpGFPu21RH6w6H/exec",
                     data: $("#submit-form").serialize(),
                     method: "post",
                     success: function (response) {
-                        alert("Form submitted successfully");
+                        // If successful, show the custom modal
+                        showModal("Form submitted successfully!");
                         $("#submit-form")[0].reset();
                     },
-
                     error: function (err) {
-                        alert("Something Error");
+                        // If there's an error, show the custom modal
+                        showModal("Something went wrong");
                     },
                 });
             });
+
             function validateinput(inputelement) {
                 inputelement.value = inputelement.value.replace(/[0-9]/g, "");
+            }
+
+            // Function to show the custom modal
+            function showModal(message) {
+                $("#modal-message").text(message);
+                $("#custom-modal").show();
+            }
+
+            // Function to close the custom modal
+            function closeModal() {
+                $("#custom-modal").hide();
             }
         </script>
     </body>
