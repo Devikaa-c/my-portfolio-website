@@ -274,7 +274,6 @@ h6 {
 
 /* Rest of your existing CSS styles */
 
-
 @media (min-width: 992px) {
     #hero {
         padding-left: 160px;
@@ -344,7 +343,6 @@ h6 {
         line-height: 24px;
     }
 }
-
 
 /*--------------------------------------------------------------
 # Sections General
@@ -749,7 +747,6 @@ section {
     padding: 0;
 }
 
-
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
@@ -867,7 +864,6 @@ section {
     background-color: #0678e3;
     color: #fff;
 }
-
 
 /*  for styling the modal */
 .custom-modal {
